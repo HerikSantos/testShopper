@@ -1,0 +1,32 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: test-shopper-mysql
+    restart: always
+    environment:
+      MYSQL_USER: herik
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: testeShopper
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - test-shopper-volume:/var/lib/mysql
+    networks:
+      - test-shopper-network
+
+  app:
+    build: .
+    container_name: test-Shopper-app
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - test-shopper-network
+    depends_on: [db]
+
+volumes:
+  test-shopper-volume:
+
+networks:
+  test-shopper-network:
